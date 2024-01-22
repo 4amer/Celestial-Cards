@@ -33,9 +33,9 @@ public class Player : MonoBehaviour
 
     private void Input()
     {
-        if (_inputManager.IsInputKeyDown("W"))
+        if (_inputManager.IsInputKey("Up"))
         {
-            Debug.Log("Loh");
+            Debug.Log("Lololololo");
         }
     }
 }

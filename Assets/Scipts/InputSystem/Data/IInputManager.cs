@@ -1,11 +1,11 @@
 using System;
 using UnityEngine;
 
-public interface IInputManager
+public abstract class IInputManager: MonoBehaviour
 {
-    public KeyCode GetInput();
-    public void SetInputKey(string key1, string key2);
-    public bool IsInputKeyDown(string key);
-    public bool IsInputKey(string key);
-    public bool IsInputKeyUp(string key);
+    public abstract KeyCode GetInput();
+    public abstract void SetInputKey(string actinon, KeyCode key);
+    public abstract bool IsInputKeyDown(string actinon);
+    public abstract bool IsInputKey(string actinon);
+    public abstract bool IsInputKeyUp(string actinon);
 }

@@ -2,59 +2,61 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputManager : MonoBehaviour, IInputManager
+public class InputManager : IInputManager
 {
-    private Dictionary<String, KeyInfo> keyByName = new Dictionary<String, KeyInfo>();
+    private Dictionary<String, KeyCode> keyByName = new Dictionary<String, KeyCode>();
 
     private void Start()
     {
         SettingsData settingsData = SettingsData.Instance;
-        foreach (String symbol in settingsData.avalebleInputSymbals)
+        foreach (var data in settingsData.actionKeyData)
         {
-            AddInputKey(symbol);
+            AddInputKey(data.action, data.keyCode);
         }
+        Debug.Log(settingsData.actionKeyData.Length);
     }
 
-    public KeyCode GetInput()
+    public override KeyCode GetInput()
     {
         throw new NotImplementedException();
     }
 
-    public bool IsInputKey(String controll)
+    public override bool IsInputKey(String action)
     {
-        if (Input.GetKey(keyByName[controll].keyCode)) return true;
+        if (Input.GetKey(keyByName[action])) return true;
         return false;
     }
 
-    public bool IsInputKeyDown(String controll)
+    public override bool IsInputKeyDown(String action)
     {
-        if (Input.GetKeyDown(keyByName[controll].keyCode)) return true;
+        if (Input.GetKeyDown(keyByName[action])) return true;
         return false;
     }
 
-    public bool IsInputKeyUp(String controll)
+    public override bool IsInputKeyUp(String action)
     {
-        if (Input.GetKeyDown(keyByName[controll].keyCode)) return true;
+        if (Input.GetKeyDown(keyByName[action])) return true;
         return false;
     }
 
-    public void SetInputKey(String controll, String key2)
+    public override void SetInputKey(String action, KeyCode key)
     {
-        if (keyByName.TryGetValue(key2, out KeyInfo value))
+        if (keyByName[action] == null)
         {
-            Debug.LogError("The '" + key2 + "' key is already in use!");
+            Debug.LogError("The '" + action + "' is not defined!");
             return;
         }
-        KeyInfo keyInfo = new KeyInfo();
-        keyInfo.keyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), key2);
-        keyByName.Remove(controll);
-        keyByName.Add(key2, keyInfo);
+        if (keyByName.ContainsValue(key))
+        {
+            Debug.LogError("The '" + key + "' key is already in use!");
+            return;
+        }
+        keyByName.Remove(action);
+        keyByName.Add(action, key);
     }
 
-    private void AddInputKey(String controll)
+    private void AddInputKey(String action, KeyCode key)
     {
-        KeyInfo keyInfo = new KeyInfo();
-        keyInfo.keyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), controll);
-        keyByName.Add(controll, keyInfo);
+        keyByName.Add(action, key);
     }
 }

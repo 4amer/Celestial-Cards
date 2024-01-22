@@ -1,14 +1,17 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class SettingsData
 {
-    private static SettingsData settingsData;
-
-
     // Input
-    public List<string, string> avalebleInputSymbals = { "A" };
+    [SerializeField] public ActionKeyInfo[] actionKeyData =
+    {
+        new ActionKeyInfo(){action = "Up", keyCode = KeyCode.W}
+    };
 
+    private static SettingsData settingsData;
 
     private SettingsData() { }
 
